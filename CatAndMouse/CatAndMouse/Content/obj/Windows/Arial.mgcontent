@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/Arial.spritefont</SourceFile>
+  <SourceFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/Arial.spritefont</SourceFile>
   <SourceTime>2016-02-05T14:12:27.5924551-07:00</SourceTime>
-  <DestFile>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/bin/Windows/Arial.xnb</DestFile>
-  <DestTime>2016-02-16T14:40:10.7499985-07:00</DestTime>
+  <DestFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/bin/Windows/Arial.xnb</DestFile>
+  <DestTime>2016-03-10T11:35:32.5327722-07:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2015-04-29T11:14:44-06:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

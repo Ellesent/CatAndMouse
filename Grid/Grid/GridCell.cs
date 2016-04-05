@@ -10,10 +10,20 @@ namespace Grid
     /// </summary>
     class GridCell : DrawableGameComponent
     {
-        Vector2 position;                   // stores position of grid cell
+       public Vector2 position;                   // stores position of grid cell
         public SpriteBatch spriteBatch;     // spriteBatch needed to draw cells
         int size;                           // size of individual grid cell
-        Color color;                        //color of grid cell
+        Color color;
+
+        MouseState lastMouseState;
+        MouseState mouseState;
+        bool isDestination;
+        bool isObstacle;
+        Rectangle clickableArea;
+
+        public Vector2 endPoint;
+        public Vector2 startPoint;
+        //color of grid cell
 
         //get and set the color of the grid cell
         public Color GetColor
@@ -21,6 +31,24 @@ namespace Grid
             get { return color; }
             set { color = value; }
         }
+
+        public bool IsDestination
+        {
+            get { return isDestination; }
+            set { isDestination = value; }
+        }
+
+        public bool IsObstacle
+        {
+            get { return isObstacle; }
+            set { isObstacle = value; }
+        }
+
+        public int Size
+        {
+            get { return size; }
+        }
+
 
         /// <summary>
         /// Constructor for Grid Cell
@@ -38,6 +66,8 @@ namespace Grid
             this.position = position;
             this.size = size;
             this.color = color;
+            isDestination = false;
+            clickableArea = new Rectangle((int)position.X, (int)position.Y, size, size);
         }
 
         /// <summary>
@@ -46,6 +76,30 @@ namespace Grid
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            lastMouseState = mouseState;
+            mouseState = Mouse.GetState();
+            Point mousePosition = new Point(mouseState.X, mouseState.Y);
+            
+            if(lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (clickableArea.Contains(mousePosition))
+                {
+                    GetColor = Color.Green;
+                    isDestination = true;
+                }
+            }
+
+            else if (lastMouseState.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed)
+            {
+                if (clickableArea.Contains(mousePosition))
+                {
+                    // = Color.Red;
+                    GetColor = Color.Black;
+                    isObstacle = true;
+                    //isDestination = true;
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -61,6 +115,7 @@ namespace Grid
             //draw a rectangle with a border for a grid cell
            spriteBatch.FillRectangle(new Rectangle((int)position.X, (int)position.Y, size, size), color);
             spriteBatch.DrawRectangle(new Rectangle((int)position.X, (int)position.Y, size, size), Color.Black);
+            //spriteBatch.DrawLine(startPoint + new Vector2(16,16), endPoint + new Vector2(16, 16), Color.DarkRed);
 
             spriteBatch.End();
         }

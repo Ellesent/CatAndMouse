@@ -4,11 +4,11 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/mouse.png</File>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/Cat.png</File>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/Arial.spritefont</File>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/bar.png</File>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/CatBig.png</File>
-    <File>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/CatSmall.png</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/mouse.png</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/Cat.png</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/Arial.spritefont</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/bar.png</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/CatBig.png</File>
+    <File>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/CatSmall.png</File>
   </SourceFiles>
 </SourceFileCollection>

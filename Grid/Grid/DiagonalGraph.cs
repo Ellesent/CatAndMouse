@@ -2,14 +2,12 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Grid
 {
-    /// <summary>
-    /// Graph class that provides the back end of the grid
-    /// </summary>
-    /// <typeparam name="T">Graph can be any type</typeparam>
-    class Graph<T> : GameComponent
+    class DiagonalGraph<T> : GameComponent 
     {
         #region Fields
 
@@ -26,14 +24,9 @@ namespace Grid
         KeyboardState oldState; //hold keyboard's old state
         KeyboardState newState; //hold keyboard's new state
 
-        public static bool ready; 
-
-       public List<Vector2> follow;
-
         float timer;            //timer to pause search 
 
         #endregion
-
 
         #region Constructor
 
@@ -42,15 +35,13 @@ namespace Grid
         /// </summary>
         /// <param name="game">the game</param>
         /// <param name="cells">The array of grid cells</param>
-        public Graph(Game game, GridCell[,] cells) : base(game)
+        public DiagonalGraph(Game game, GridCell[,] cells) : base(game)
         {
 
             //add this to the component list
             game.Components.Add(this);
 
             hasEndNode = false;
-
-            follow = new List<Vector2>();
 
             //initialize random variables
             randomI = new Random();
@@ -60,7 +51,6 @@ namespace Grid
             GO = false;
             timer = 200;
 
-           
 
             //Initialiize nodes array to the size of the grid cells array
             nodes = new Node<T>[cells.GetLength(0), cells.GetLength(1)];
@@ -70,122 +60,130 @@ namespace Grid
             {
                 for (int j = 0; j < cells.GetLength(1); j++)
                 {
-                        nodes[i, j] = new Node<T>(cells[i, j]);
+                    nodes[i, j] = new Node<T>(cells[i, j]);
                 }
             }
 
             //Add an edge between nodes based on the nodes location
             for (int i = 0; i < nodes.GetLength(0); i++)
             {
-                //add edges based on x location
                 for (int j = 0; j < nodes.GetLength(1); j++)
                 {
+
                     if (i == 0)
                     {
-                      
                         nodes[i, j].AddEdge(nodes[i + 1, j]);
+
+                        if ( j== 0)
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j + 1]);
+                            nodes[i, j].AddEdge(nodes[1 + 1, j + 1]);
+                        }
+
+                        else if (j  == nodes.GetLength(1) - 1)
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j - 1]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j - 1]);
+                        }
+
+                        else
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j + 1]);
+                            nodes[i, j].AddEdge(nodes[1 + 1, j + 1]);
+                            nodes[i, j].AddEdge(nodes[i, j - 1]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j - 1]);
+                        }
                     }
-                    else if (i == nodes.GetLength(0) - 1)
+                    else if ( i == nodes.GetLength(0) - 1)
                     {
                         nodes[i, j].AddEdge(nodes[i - 1, j]);
+
+                        if (j == 0)
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j + 1]);
+                            nodes[i, j].AddEdge(nodes[1 - 1, j + 1]);
+                        }
+                        else if (j == nodes.GetLength(1) - 1)
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j - 1]);
+                            nodes[i, j].AddEdge(nodes[i - 1, j - 1]);
+                        }
+
+                        else
+                        {
+                            nodes[i, j].AddEdge(nodes[i, j + 1]);
+                            nodes[i, j].AddEdge(nodes[1 - 1, j + 1]);
+                            nodes[i, j].AddEdge(nodes[i, j - 1]);
+                            nodes[i, j].AddEdge(nodes[i - 1, j - 1]);
+                        }
                     }
 
-                    else
-                    {
-                        nodes[i, j].AddEdge(nodes[i + 1, j]);
-                        nodes[i, j].AddEdge(nodes[i - 1, j]);
-                    }
 
-                    //add edges based on y location
                     if (j == 0)
                     {
                         nodes[i, j].AddEdge(nodes[i, j + 1]);
-                    }
-                    else if (j == nodes.GetLength(1) - 1)
-                    {
-                        nodes[i, j].AddEdge(nodes[i, j - 1]);
+
+                        if (i < 0 && i > nodes.GetLength(0) - 1)
+                        {
+                            nodes[i, j].AddEdge(nodes[i - 1, j]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j]);
+                            nodes[i, j].AddEdge(nodes[i - 1, j + 1]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j + 1]);
+                        }
+                     
+
                     }
 
-                    else
+                    else if (j == nodes.GetLength(0) - 1)
                     {
-                        nodes[i, j].AddEdge(nodes[i, j + 1]);
                         nodes[i, j].AddEdge(nodes[i, j - 1]);
+
+                        if (i < 0 && i > nodes.GetLength(0) - 1)
+                        {
+                            nodes[i, j].AddEdge(nodes[i - 1, j]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j]);
+                            nodes[i, j].AddEdge(nodes[i - 1, j - 1]);
+                            nodes[i, j].AddEdge(nodes[i + 1, j - 1]);
+                        }
                     }
+
+                    if (j > 0 && i > 0 && j < nodes.GetLength(1) - 1 && i  <nodes.GetLength(0) - 1)
+                    {
+                        nodes[i, j].AddEdge(nodes[i - 1, j]);
+                        nodes[i, j].AddEdge(nodes[i + 1, j]);
+                        nodes[i, j].AddEdge(nodes[i - 1, j - 1]);
+                        nodes[i, j].AddEdge(nodes[i + 1, j - 1]);
+
+                        nodes[i, j].AddEdge(nodes[i - 1, j]);
+                        nodes[i, j].AddEdge(nodes[i + 1, j]);
+                        nodes[i, j].AddEdge(nodes[i - 1, j + 1]);
+                        nodes[i, j].AddEdge(nodes[i + 1, j + 1]);
+                    }
+
+
                 }
             }
+
 
             //get the random x and y location of nodes array
             arrayX = randomI.Next(nodes.GetLength(0) - 1);
             arrayY = randomJ.Next(nodes.GetLength(1) - 1);
 
-            //set start node to random location
             startNode = nodes[arrayX, arrayY];
-
-            ////get the random x and y location of nodes array
-            //arrayX = randomI.Next(nodes.GetLength(0) - 1);
-            //arrayY = randomJ.Next(nodes.GetLength(1) - 1);
 
             ////set end node to random location
             //endNode = nodes[arrayX, arrayY];
 
             //set the start node,s color to red and the end node's color to green
             startNode.Cell.GetColor = Color.Red;
-         
+
         }
 
         #endregion
 
 
-        #region Properties
-
-
-
-        #endregion
 
         #region Public Methods
-
-        public void Reset()
-        {
-            //get new locations for start and end node
-            arrayX = randomI.Next(nodes.GetLength(0) - 1);
-            arrayY = randomJ.Next(nodes.GetLength(1) - 1);
-            startNode = nodes[arrayX, arrayY];
-
-
-
-            //arrayX = randomI.Next(nodes.GetLength(0) - 1);
-            //arrayY = randomJ.Next(nodes.GetLength(1) - 1);
-            //endNode = nodes[arrayX, arrayY];
-
-            //reset the timer
-            timer = 100;
-
-            //for each node, reset the color, distance, the wasVisited boolean, and restart the search
-            foreach (Node<T> n in nodes)
-            {
-                n.Cell.GetColor = Color.CornflowerBlue;
-                n.Distance = Int32.MaxValue;
-                n.WasVisited = false;
-                // startNode = endNode;
-                startNode.Cell.GetColor = Color.Red;
-                n.Cell.IsDestination = false;
-                n.Cell.IsObstacle = false;
-                //endNode.Cell.GetColor = Color.Green;
-
-                if (toVisit != null)
-                {
-                    toVisit.Clear();
-                }
-                n.BackNode = null;
-                ready = false;
-
-
-                // BreadthFirstSearch();
-
-            }
-            hasEndNode = false;
-        }
-
         /// <summary>
         /// Update method for a graph
         /// </summary>
@@ -195,7 +193,7 @@ namespace Grid
         {
             base.Update(gameTime);
 
-            if(hasEndNode == false)
+            if (hasEndNode == false)
             {
                 foreach (Node<T> n in nodes)
                 {
@@ -204,14 +202,30 @@ namespace Grid
                         endNode = n;
                         endNode.Cell.GetColor = Color.Green;
                         hasEndNode = true;
-                    }
 
+                    }
                 }
             }
 
             if (hasEndNode == true)
             {
-               
+                foreach (Node<T> n in nodes)
+                {
+                    if (n == endNode)
+                    {
+
+                    }
+                    else if (n.Cell.IsDestination == true && n != endNode)
+                    {
+                        startNode.Cell.GetColor = Color.CornflowerBlue;
+                        endNode.Cell.GetColor = Color.CornflowerBlue;
+                        startNode = endNode;
+                        startNode.Cell.GetColor = Color.Red;
+                        endNode = n;
+                        endNode.Cell.GetColor = Color.Green;
+                    }
+
+                }
             }
 
             //get old state and new state of keyboard
@@ -222,12 +236,47 @@ namespace Grid
             if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
             {
 
-                Reset();
+                //get new locations for start and end node
+                arrayX = randomI.Next(nodes.GetLength(0) - 1);
+                arrayY = randomJ.Next(nodes.GetLength(1) - 1);
+                startNode = nodes[arrayX, arrayY];
+
+
+
+                //arrayX = randomI.Next(nodes.GetLength(0) - 1);
+                //arrayY = randomJ.Next(nodes.GetLength(1) - 1);
+                //endNode = nodes[arrayX, arrayY];
+
+                //reset the timer
+                timer = 100;
+
+                //for each node, reset the color, distance, the wasVisited boolean, and restart the search
+                foreach (Node<T> n in nodes)
+                {
+                    n.Cell.GetColor = Color.CornflowerBlue;
+                    n.Distance = Int32.MaxValue;
+                    n.WasVisited = false;
+                    // startNode = endNode;
+                    startNode.Cell.GetColor = Color.Red;
+                    n.Cell.IsDestination = false;
+                    //endNode.Cell.GetColor = Color.Green;
+
+                    if (toVisit != null)
+                    {
+                        toVisit.Clear();
+                    }
+                    n.BackNode = null;
+
+
+                    // BreadthFirstSearch();
+
+                }
+                hasEndNode = false;
 
             }
 
             //if the queue is not empty, count down the timer for the search
-            if (toVisit != null && toVisit.Count > 0   && GO == true)
+            if (toVisit != null && toVisit.Count > 0 && GO == true)
             {
                 timer -= (float)gameTime.ElapsedGameTime.Milliseconds;
             }
@@ -235,7 +284,6 @@ namespace Grid
             //if the tovisit queue is not empty, GO is tue, and the timer is over, start the search
             if (GO == true && toVisit.Count > 0 && timer <= 0)
             {
-                Console.WriteLine("Number of nodes = " + Node<T>.numberNodes);
 
                 //dequeue the first node and set it to the current node
                 Node<T> curr = toVisit.Dequeue();
@@ -249,32 +297,25 @@ namespace Grid
                 //for each neighbor of the current cell..
                 foreach (Node<T> n in curr.Neighbors)
                 {
-                    
 
                     //if one of the neighbors is the end node, we found the end so get out of the loop
                     if (n == endNode)
                     {
                         n.BackNode = curr;
-                        //follow.Enqueue(curr.Cell.position + new Vector2(curr.Cell.Size / 2, curr.Cell.Size / 2));
-                        ready = true; 
+                        n.Cell.startPoint = curr.Cell.position;
+                        n.Cell.endPoint = n.Cell.position;
 
                         Node<T> t = curr;
 
-                        follow.Add(endNode.Cell.position + new Vector2(endNode.Cell.Size / 2));
-
-                        while (t != startNode)
+                        while (t != null)
                         {
                             t.Cell.GetColor = Color.Blue;
-                            follow.Add(t.Cell.position + new Vector2(t.Cell.Size / 2));
                             t = t.BackNode;
                         }
-                        follow.Add(startNode.Cell.position + new Vector2(startNode.Cell.Size / 2));
-
-
-                        //n.Cell.GetColor = Color.Blue;
+                        n.Cell.GetColor = Color.Blue;
                         GO = false;
-                       // toVisit.Clear();
-                       
+                        // toVisit.Clear();
+
                         return;
                     }
 
@@ -283,7 +324,6 @@ namespace Grid
                     {
 
                     }
-                   
                     //else...
                     else
                     {
@@ -293,9 +333,6 @@ namespace Grid
                         //set node to visited, and set the back node to the current node
                         n.WasVisited = true;
                         n.BackNode = curr;
-                        //follow.Enqueue(curr.Cell.position + new Vector2(curr.Cell.Size / 2, curr.Cell.Size / 2));
-                        n.Cell.startPoint = curr.Cell.position;
-                        n.Cell.endPoint = n.Cell.position;
 
                         //put the node in the queue and set it's color to orange
                         toVisit.Enqueue(n);
@@ -323,18 +360,17 @@ namespace Grid
             //initiliaze queue and add the start node
             toVisit = new Queue<Node<T>>();
             toVisit.Enqueue(startNode);
-            startNode.WasVisited = true;
-            //follow.Enqueue(startNode.Cell.position);
 
             //for each node, set the distance to the max number
             for (int i = 0; i < nodes.GetLength(0); i++)
-            {
+            {   
                 for (int j = 0; j < nodes.GetLength(1); j++)
                 {
                     nodes[i, j].Distance = Int32.MaxValue;
                 }
             }
 
+            startNode.WasVisited = true;
             //set GO to true and start the search!
             GO = true;
         }
@@ -349,17 +385,15 @@ namespace Grid
 
         #region Fields
         private class Node<N>
-            {
-                List<Node<N>> neighbors;    //A list of the node's neighbors
-                List<Edge<N>> edges;        //a list of the node's edges with other nodes
-                GridCell currCell;          //the grid cell connected to this node
-                bool wasVisited;            //was the node visited in the search already?
-                Node<T> backNode;           //holds the node this node came from
-                int distance;               //holds the distance of this node
+        {
+            List<Node<N>> neighbors;    //A list of the node's neighbors
+            List<Edge<N>> edges;        //a list of the node's edges with other nodes
+            GridCell currCell;          //the grid cell connected to this node
+            bool wasVisited;            //was the node visited in the search already?
+            Node<T> backNode;           //holds the node this node came from
+            int distance;               //holds the distance of this node
 
-            public static int numberNodes = 0;
-
-                #endregion
+            #endregion
 
             #region Properties
 
@@ -425,9 +459,6 @@ namespace Grid
                 edges = new List<Edge<N>>();
                 neighbors = new List<Node<N>>();
                 currCell = cell;
-                backNode = null;
-
-                numberNodes++;
             }
 
             #endregion
@@ -487,3 +518,4 @@ namespace Grid
         #endregion
     }
 }
+

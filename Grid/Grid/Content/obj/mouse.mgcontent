@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/CatBig.png</SourceFile>
-  <SourceTime>2016-02-16T14:32:46.2797768-07:00</SourceTime>
-  <DestFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/bin/Windows/CatBig.xnb</DestFile>
-  <DestTime>2016-03-10T11:35:32.5789976-07:00</DestTime>
+  <SourceFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/Grid/Grid/Content/mouse.png</SourceFile>
+  <SourceTime>2016-01-29T15:45:36.1747021-07:00</SourceTime>
+  <DestFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/Grid/Grid/Content/bin/mouse.xnb</DestFile>
+  <DestTime>2016-03-15T20:21:48.2053998-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2015-04-29T11:14:44-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

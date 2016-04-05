@@ -13,6 +13,16 @@ namespace Grid
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        KeyboardState oldState;
+        KeyboardState newState;
+
+        UserSprite mouse; 
+
+        Graph<int> grid;
+
+
+        DiagonalGraph<int> diag;
+
         const int gridSize = 32;  // grid cell size
         GridCell[,] cells;        // array of grid cells for drawing the grid
 
@@ -27,6 +37,8 @@ namespace Grid
 
             //Initialize grid cell array
             cells = new GridCell[graphics.PreferredBackBufferWidth / gridSize, graphics.PreferredBackBufferHeight / gridSize];
+            IsMouseVisible = true; 
+
         }
 
         /// <summary>
@@ -61,8 +73,10 @@ namespace Grid
             }
 
             //create the graph based on the grid cells and perform the breath first search
-            Graph<int> grid = new Graph<int>(this, cells);
-            grid.BreadthFirstSearch();
+            grid = new Graph<int>(this, cells);
+            diag = new DiagonalGraph<int>(this, cells);
+
+            mouse = new UserSprite(this, "mouse", spriteBatch, new Vector2(5, 5), new Vector2(0.5f, 0.5f), grid.follow);
         }
 
         /// <summary>
@@ -81,10 +95,23 @@ namespace Grid
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+           
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            oldState = newState;
+            newState = Keyboard.GetState();
 
+            if (newState.IsKeyDown(Keys.B) && oldState.IsKeyUp(Keys.B))
+            {
+                grid.BreadthFirstSearch();
+
+            }
+            else if (newState.IsKeyDown(Keys.D) && oldState.IsKeyUp(Keys.D))
+            {
+                diag.BreadthFirstSearch();
+            }
             // TODO: Add your update logic here
+
 
             base.Update(gameTime);
         }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/bar.png</SourceFile>
+  <SourceFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/bar.png</SourceFile>
   <SourceTime>2016-02-11T14:30:23.493823-07:00</SourceTime>
-  <DestFile>C:/Users/Francesca/documents/visual studio 2015/Projects/CatAndMouse/CatAndMouse/Content/bin/Windows/bar.xnb</DestFile>
-  <DestTime>2016-02-16T14:40:10.7530007-07:00</DestTime>
+  <DestFile>C:/Users/Francesca/Documents/GitHub/CatAndMouse/CatAndMouse/CatAndMouse/Content/bin/Windows/bar.xnb</DestFile>
+  <DestTime>2016-03-10T11:35:32.5513233-07:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2015-04-29T11:14:44-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
